@@ -191,6 +191,9 @@ void Uart_test::run()
 
 
 	while (!should_exit()) {
+//        senser_data.timestamp=hrt_absolute_time();
+//        senser_data.max_distance=100;
+//         _senser_data_pub.publish(senser_data);
 ret = ::read(_fd, &data, 1);
 if (ret < 0) {
     PX4_ERR("read err: %d", ret);
@@ -205,10 +208,16 @@ else
 //             printf("readbuf[%d]:%c\n",i,readbuf[i]);
          }
 //      printf("readbuf:%s\n",readbuf);
-
+         result=(double)(readbuf[5]-'0')*100+(double)(readbuf[6]-'0')*10+(double)(readbuf[7]-'0')+(double)(readbuf[8]-'0')*0.1+(double)(readbuf[9]-'0')*0.01;
+         printf("result:%lf\n",result);
+         send_data.altitude=result;
+         send_data.timestamp=hrt_absolute_time();
+         _send_data_pub.publish(send_data);
+//        senser_data.timestamp=hrt_absolute_time();
+//        senser_data.max_distance=result;
+//         _senser_data_pub.publish(senser_data);
      }
-      result=(double)(readbuf[5]-'0')*100+(double)(readbuf[6]-'0')*10+(double)(readbuf[7]-'0')+(double)(readbuf[8]-'0')*0.1+(double)(readbuf[9]-'0')*0.01;
-      printf("result:%lf\n",result);
+
 }
 ret = ::write(_fd,&readbuf,10);
 if (ret < 0) {

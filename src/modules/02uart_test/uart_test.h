@@ -39,6 +39,8 @@
 #include <uORB/Publication.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <termios.h>
+#include <uORB/topics/transponder_report.h>
+#include <uORB/topics/distance_sensor.h>
 extern "C" __EXPORT int uart_test_main(int argc, char *argv[]);
 
 
@@ -77,7 +79,8 @@ private:
 	void parameters_update(bool force = false);
         char _linebuf[10] ={};
         int _fd{-1};
-
+        transponder_report_s send_data;
+        distance_sensor_s senser_data;
 	DEFINE_PARAMETERS(
 		(ParamInt<px4::params::SYS_AUTOSTART>) _param_sys_autostart,   /**< example parameter */
 		(ParamInt<px4::params::SYS_AUTOCONFIG>) _param_sys_autoconfig  /**< another parameter */
@@ -86,5 +89,7 @@ private:
    // Subscriptions
     uORB::Subscription	_parameter_update_sub{ORB_ID(parameter_update)};
     // Publications
+    uORB::Publication<transponder_report_s> _send_data_pub {ORB_ID(transponder_report)};
+    uORB::Publication<distance_sensor_s> _senser_data_pub {ORB_ID(distance_sensor)};
 };
 

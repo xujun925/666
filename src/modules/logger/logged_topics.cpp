@@ -44,6 +44,7 @@ using namespace px4::logger;
 
 void LoggedTopics::add_default_topics()
 {
+    add_topic("transponder_report", 100);
 	add_topic("actuator_armed");
 	add_topic("actuator_controls_0", 100);
 	add_topic("actuator_controls_1", 100);

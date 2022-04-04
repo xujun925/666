@@ -1903,11 +1903,11 @@ protected:
 		transponder_report_s pos;
 		bool sent = false;
 
-		while (_pos_sub.update(&pos)) {
+        while (_pos_sub.update(&pos)) {
 
-			if (!(pos.flags & transponder_report_s::PX4_ADSB_FLAGS_RETRANSLATE)) {
-				continue;
-			}
+//			if (!(pos.flags & transponder_report_s::PX4_ADSB_FLAGS_RETRANSLATE)) {
+//				continue;
+//			}
 
 			mavlink_adsb_vehicle_t msg{};
 			msg.ICAO_address = pos.icao_address;
@@ -1938,7 +1938,7 @@ protected:
 			if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_SQUAWK) { msg.flags |= ADSB_FLAGS_VALID_SQUAWK; }
 
 			mavlink_msg_adsb_vehicle_send_struct(_mavlink->get_channel(), &msg);
-			sent = true;
+            sent = true;
 		}
 
 		return sent;
